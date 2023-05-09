@@ -1,13 +1,22 @@
-import { useEffect, useState } from 'react';
-import { getSuites, SuitesType } from '../models';
+import { useEffect } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, AppState } from '../store/types';
+import { getSuitesSlice } from '../store/reducers';
 
 const InitApp = () => {
-  const [allSuites, setAllSuites] = useState<SuitesType>([]);
-  useEffect(() => {
-    getSuites().then((suites) => setAllSuites(suites));
-  }, []);
+  const dispatch: AppDispatch = useDispatch();
+  const suites = useSelector((state: AppState) => state.suites);
 
-  console.log('ALL SUITES ', allSuites);
+  useEffect(() => {
+    const initData = async () => {
+      dispatch(getSuitesSlice());
+    };
+    console.log('inited ');
+    initData();
+  }, [dispatch]);
+
+  console.log('ALL SUITES ', suites);
   return null;
 };
 
