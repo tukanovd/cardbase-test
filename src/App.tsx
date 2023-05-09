@@ -1,10 +1,11 @@
-import React from "react";
-import model from "./models"
+import React from 'react';
+import { InitApp } from './containers';
 
 function App() {
   return (
     <div>
-HELLO WORLD
+      <InitApp />
+      HELLO WORLD
     </div>
   );
 }
