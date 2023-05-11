@@ -7,9 +7,9 @@ import { AppDispatch } from '../store/types';
 import { suitesToggleFollow } from '../store/reducers';
 
 type CardRendererType = {
-  id: number;
-  onSelect?: (id: number) => void;
-  onDetails?: (id: number) => void;
+  id: number | string;
+  onSelect?: (id: number | string) => void;
+  onDetails?: (id: number | string) => void;
   description?: string;
   isSelected?: boolean;
 };

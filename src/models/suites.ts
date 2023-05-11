@@ -1,4 +1,4 @@
-import { fetchData, withCache } from '../utils';
+import { fetchData, withCache, updateCache } from '../utils';
 import { SUITES_URL } from './constants';
 import { suitesStub } from './stub';
 import { SuiteType, SuitesType, SuiteIdType } from './types';
@@ -7,14 +7,24 @@ const cachedFetch = withCache<Promise<SuitesType>>(fetchData);
 
 export const getSuites: () => Promise<SuitesType> = async () => {
   const suites = await cachedFetch(SUITES_URL);
-  return suitesStub;
 
-  // try {
-  //   return JSON.parse(suites);
-  // } catch (e) {
-  //   console.error('Error while parsing data ', e);
-  //   return [];
-  // }
+  try {
+    if (typeof suites === 'string') {
+      return JSON.parse(suites as unknown as string);
+    } else if (!!suites) return suites;
+  } catch (e) {
+    console.error('Error while parsing data ', e);
+  }
+
+  // return stub data
+  return Promise.resolve(suitesStub).then((suites) => {
+    updateCache(SUITES_URL, suites);
+    return suites;
+  });
+};
+
+export const updateSuites: (suites: SuitesType) => void = (suites) => {
+  updateCache(SUITES_URL, suites);
 };
 
 export const toggleFollow: (

@@ -4,7 +4,7 @@ import suitesSliceReducer, {
   suitesFailed,
   getSuitesSlice,
   suitesToggleFollow,
-  suitesUpdate,
+  suitesUpdateAction,
   showAllSuites,
   showSelectedSuites,
 } from './suites';
@@ -16,7 +16,7 @@ export {
   getSuitesSlice,
   suitesToggleFollow,
   suitesSliceReducer,
-  suitesUpdate,
+  suitesUpdateAction as suitesUpdate,
   showAllSuites,
   showSelectedSuites,
 };

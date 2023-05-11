@@ -1,5 +1,5 @@
 interface CacheResolver<T> {
-  (url: string): T;
+  (key: string): T;
 }
 
 interface CacheItem {
@@ -8,28 +8,34 @@ interface CacheItem {
 
 type Cache = Map<string | number, CacheItem>;
 
-export const withCache = <T>(
-  callback: (url: string) => T,
-): CacheResolver<T> => {
-  const cache: Cache = new Map();
+const cache: Cache = new Map();
 
-  function runFuncAndSave(url: string): T {
-    const result = callback(url);
-    cache.set(url, { value: result });
+export const withCache = <T>(
+  callback: (key: string) => T,
+): CacheResolver<T> => {
+  function runFuncAndSave(key: string): T {
+    const result = callback(key);
+    cache.set(key, { value: result });
     return result;
   }
 
-  function cacheResolver(url: string) {
-    const cachedValue = cache.get(url);
+  function cacheResolver(key: string) {
+    const cachedValue = cache.get(key);
 
     if (!!cachedValue) {
       return cachedValue.value;
     }
 
-    return runFuncAndSave(url);
+    return runFuncAndSave(key);
   }
 
   return cacheResolver;
+};
+
+export const updateCache = <T>(key: string, data: T): void => {
+  if (cache.has(key)) {
+    cache.set(key, { value: data });
+  }
 };
 
 export default withCache;

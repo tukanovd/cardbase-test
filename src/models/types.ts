@@ -1,4 +1,4 @@
-export type SuiteIdType = number;
+export type SuiteIdType = number | string;
 
 export type SeoSuiteType = {
   id: SuiteIdType;

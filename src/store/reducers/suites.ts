@@ -7,7 +7,7 @@ import {
 } from './constants';
 import { InitialStateType, SuitesPayloadResult } from './types';
 import { SliceStatus } from '../types';
-import { SuiteIdType } from '../../models';
+import { SuiteIdType, SuitesType } from '../../models';
 
 const initialState: InitialStateType = {
   status: SliceStatus.Idle,
@@ -38,15 +38,19 @@ const suitesSlice = createSlice({
       status: SliceStatus.Failed,
       error: action.payload.errorMessage,
     }),
-    suitesUpdate: (state, action: PayloadAction<SuitesPayloadResult>) => ({
+    suitesUpdateAction: (state, action: PayloadAction<SuitesType>) => ({
       ...state,
-      suites: action.payload.suites,
+      suites: action.payload,
     }),
   },
 });
 
-export const { suitesRequested, suitesFinished, suitesFailed, suitesUpdate } =
-  suitesSlice.actions;
+export const {
+  suitesRequested,
+  suitesFinished,
+  suitesFailed,
+  suitesUpdateAction,
+} = suitesSlice.actions;
 
 export {
   getSuitesSlice,
