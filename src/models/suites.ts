@@ -3,10 +3,10 @@ import { SUITES_URL } from './constants';
 import { suitesStub } from './stub';
 import { SuiteType, SuitesType, SuiteIdType } from './types';
 
-const chachedFetch = withCache<Promise<SuitesType>>(fetchData);
+const cachedFetch = withCache<Promise<SuitesType>>(fetchData);
 
 export const getSuites: () => Promise<SuitesType> = async () => {
-  const suites = await chachedFetch(SUITES_URL);
+  const suites = await cachedFetch(SUITES_URL);
   return suitesStub;
 
   // try {
