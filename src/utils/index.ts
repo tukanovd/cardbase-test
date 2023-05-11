@@ -1,3 +1,4 @@
-import { fetchData } from "./fetchData";
+import { fetchData } from './fetchData';
+import withCache from './withCache';
 
-export { fetchData };
+export { fetchData, withCache };
