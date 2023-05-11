@@ -4,11 +4,11 @@ import { suitesSliceReducer } from './reducers';
 import rootSaga from './sagas';
 
 type RootReducerType = {
-  suites: ReturnType<typeof suitesSliceReducer>;
+  suitesData: ReturnType<typeof suitesSliceReducer>;
 };
 
 const reducer = combineReducers<RootReducerType>({
-  suites: suitesSliceReducer,
+  suitesData: suitesSliceReducer,
 });
 const sagaMiddleware = createSagaMiddleware();
 

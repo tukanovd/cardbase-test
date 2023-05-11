@@ -2,6 +2,9 @@ import React from 'react';
 import { IconButton, Button, Typography } from '@mui/material';
 import StarsRoundedIcon from '@mui/icons-material/StarsRounded';
 import { ReactComponent as StubSVGImg } from '../assets/stubImg.svg';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../store/types';
+import { suitesToggleFollow } from '../store/reducers';
 
 type CardRendererType = {
   id: number;
@@ -14,7 +17,12 @@ type CardRendererType = {
 const CardRenderer = (props: CardRendererType) => {
   const { description, id, onDetails, onSelect, isSelected = false } = props;
   const handleDetailClick = () => onDetails && onDetails(id);
-  const handleSelectClick = () => onSelect && onSelect(id);
+  const handleSelectClick = () => {
+    dispatch(suitesToggleFollow(id));
+    onSelect && onSelect(id);
+  };
+
+  const dispatch: AppDispatch = useDispatch();
 
   return (
     <div className="flex content-between full-width">

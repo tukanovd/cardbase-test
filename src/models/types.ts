@@ -1,5 +1,7 @@
+export type SuiteIdType = number;
+
 export type SeoSuiteType = {
-  id: number;
+  id: SuiteIdType;
   image: string | null;
   is_follow: boolean;
   name: string;
