@@ -1,19 +1,25 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import {
-  Box,
-  Container,
-  Divider,
-  Typography,
-  List,
-  ListItem,
-  Paper,
-} from '@mui/material';
+import { VariableSizeList, ListChildComponentProps } from 'react-window';
+import { Box, Container } from '@mui/material';
+
 import ListFilter from './ListFilter';
-import { Header, SearchField, CardRenderer, Loader } from '../components';
+import {
+  Header,
+  SearchField,
+  Loader,
+  VirtualizedList,
+  SuiteCard,
+} from '../components';
 import { AppState, SliceStatus } from '../store/types';
 import { ReactComponent as CollectbaseLogo } from '../assets/CollectbaseLogo.svg';
+import { SeoSuiteType, SuiteType } from '../models';
 
+const headerStub = {
+  id: null,
+  seo_suites: null,
+  year: 2023,
+};
 const stub = {
   id: 51361,
   image:
@@ -25,12 +31,95 @@ const stub = {
   year: 2021,
 };
 
-const _suitesData = [stub, stub, stub, stub, stub];
+const _suitesData = [
+  {
+    ...headerStub,
+    seo_suites: [
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+      stub,
+    ],
+  },
+  { ...headerStub, seo_suites: [stub, stub, stub, stub] },
+  { ...headerStub, seo_suites: [stub, stub, stub, stub] },
+  { ...headerStub, seo_suites: [stub, stub, stub, stub] },
+  { ...headerStub, seo_suites: [stub, stub, stub, stub] },
+  { ...headerStub, seo_suites: [stub, stub, stub, stub] },
+];
+
+const itemSize = 173;
+const rowSize: number[] = [];
+const setRowSize = (index: number, count: number) =>
+  (rowSize[index] = count * itemSize);
+const getRowSize = (index: number) => rowSize[index];
+
+const renderRow = ({
+  index,
+  data,
+  style,
+}: ListChildComponentProps<SuiteType[]>) => {
+  const item = data[index];
+
+  const { year, seo_suites } = item;
+  return (
+    <div style={style}>
+      <VirtualizedList<SeoSuiteType>
+        header={year}
+        data={seo_suites}
+        childRenderer={renderCard}
+      />
+    </div>
+  );
+};
+
+const renderCard = (data: SeoSuiteType) => {
+  console.log('data ', data);
+  return <SuiteCard suiteData={data} />;
+};
+
 const Home = () => {
   const suitesData = useSelector((state: AppState) => state.suites);
   const { status, suites } = suitesData;
 
-  console.log('suites ', suites);
+  _suitesData.forEach((item, index) => {
+    console.log('suites index ', index);
+    console.log('suites item ', item);
+    setRowSize(index, item.seo_suites.length);
+  });
+  console.log('suites ', rowSize);
   return (
     <>
       <Header>
@@ -46,40 +135,16 @@ const Home = () => {
         <Loader status={status}>
           <Box sx={{ height: '100vh' }}>
             <ListFilter />
-
-            <List>
-              <ListItem disablePadding>
-                <Typography
-                  variant="h3"
-                  color="text.disabled"
-                  style={{ paddingTop: '10px', paddingBottom: '14px' }}
-                >
-                  2011
-                </Typography>
-              </ListItem>
-
-              <ListItem disablePadding>
-                <Paper variant="outlined" className="full-width">
-                  {_suitesData.map((suite, index) => {
-                    const { id, name, is_follow, sport_name } = suite;
-                    const description = `${name} ${sport_name}`;
-                    const lastItem = index === _suitesData.length - 1;
-
-                    return (
-                      <>
-                        <CardRenderer
-                          id={id}
-                          description={description}
-                          isSelected={is_follow}
-                        />
-
-                        {!lastItem && <Divider flexItem />}
-                      </>
-                    );
-                  })}
-                </Paper>
-              </ListItem>
-            </List>
+            <VariableSizeList
+              itemData={_suitesData}
+              height={500}
+              width="100%"
+              itemSize={getRowSize}
+              itemCount={_suitesData.length}
+              overscanCount={1}
+            >
+              {renderRow}
+            </VariableSizeList>
           </Box>
         </Loader>
       </Container>

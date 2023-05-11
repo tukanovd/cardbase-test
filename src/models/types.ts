@@ -1,4 +1,4 @@
-type SeoSuiteType = {
+export type SeoSuiteType = {
   id: number;
   image: string | null;
   is_follow: boolean;
