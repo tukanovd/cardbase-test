@@ -1,5 +1,10 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { GET_SUITES, TOGGLE_FOLLOW } from './constants';
+import {
+  GET_SUITES,
+  SHOW_ALL_SUITES,
+  SHOW_ONLY_SELECTED_SUITES,
+  TOGGLE_FOLLOW,
+} from './constants';
 import { InitialStateType, SuitesPayloadResult } from './types';
 import { SliceStatus } from '../types';
 import { SuiteIdType } from '../../models';
@@ -12,6 +17,8 @@ const initialState: InitialStateType = {
 
 const getSuitesSlice = createAction(GET_SUITES);
 const suitesToggleFollow = createAction<SuiteIdType>(TOGGLE_FOLLOW);
+const showSelectedSuites = createAction(SHOW_ONLY_SELECTED_SUITES);
+const showAllSuites = createAction(SHOW_ALL_SUITES);
 
 const suitesSlice = createSlice({
   name: 'suites',
@@ -41,6 +48,11 @@ const suitesSlice = createSlice({
 export const { suitesRequested, suitesFinished, suitesFailed, suitesUpdate } =
   suitesSlice.actions;
 
-export { getSuitesSlice, suitesToggleFollow };
+export {
+  getSuitesSlice,
+  suitesToggleFollow,
+  showSelectedSuites,
+  showAllSuites,
+};
 
 export default suitesSlice.reducer;

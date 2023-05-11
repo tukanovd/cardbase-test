@@ -5,6 +5,7 @@ import {
   getSuites,
   toggleFollow,
   SuiteIdType,
+  getAllSelected,
 } from '../../models';
 import {
   suitesRequested,
@@ -36,6 +37,28 @@ export function* handleFollowChange(action: PayloadAction<SuiteIdType>) {
     const updatedSuites = { meta: allSuites.meta, suites };
 
     yield put(suitesUpdate({ suites: updatedSuites }));
+  } catch (e: any) {
+    yield put(suitesFailed({ errorMessage: e }));
+  }
+}
+
+export function* handleShowSelected() {
+  const allSuites: SuitesType = yield select(getStoreSuites);
+  try {
+    const suites: SuiteType[] = yield call(getAllSelected, allSuites.suites);
+    const updatedSuites = { meta: allSuites.meta, suites };
+
+    yield put(suitesUpdate({ suites: updatedSuites }));
+  } catch (e: any) {
+    yield put(suitesFailed({ errorMessage: e }));
+  }
+}
+
+export function* handleShowAll() {
+  try {
+    const suites: SuitesType = yield call(getSuites);
+
+    yield put(suitesUpdate({ suites }));
   } catch (e: any) {
     yield put(suitesFailed({ errorMessage: e }));
   }

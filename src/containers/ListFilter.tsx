@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Typography, Divider, Badge } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { showAllSuites, showSelectedSuites } from '../store/reducers';
 
 const FILTER_IDS = {
   ALL: 'ALL',
@@ -8,8 +10,16 @@ const FILTER_IDS = {
 
 const ListFilter = () => {
   const [selectedFilter, setSelectedFilter] = useState(FILTER_IDS.ALL);
-  const handleSelectAll = () => setSelectedFilter(FILTER_IDS.ALL);
-  const handleSelectSelectedOnly = () => setSelectedFilter(FILTER_IDS.SELECTED);
+  const dispatch = useDispatch();
+
+  const handleSelectAll = () => {
+    dispatch(showAllSuites());
+    setSelectedFilter(FILTER_IDS.ALL);
+  };
+  const handleSelectSelectedOnly = () => {
+    dispatch(showSelectedSuites());
+    setSelectedFilter(FILTER_IDS.SELECTED);
+  };
 
   return (
     <div className="flex content-center">

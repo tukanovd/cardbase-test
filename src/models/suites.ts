@@ -44,21 +44,19 @@ export const toggleFollow: (
 export const getAllSelected: (
   suites: SuiteType[],
 ) => Promise<SuiteType[]> = async (suites) => {
-  const updatedSuites = suites.map((suite) => {
-    const updatedSeoSuites = suite.seo_suites.map((seoSuite) => {
-      if (seoSuite.is_follow) {
-        return {
-          ...seoSuite,
-        };
-      }
-      return seoSuite;
-    });
+  const selectedSuites: SuiteType[] = [];
 
-    return {
-      ...suite,
-      seo_suites: updatedSeoSuites,
-    };
-  });
+  for (const suite of suites) {
+    const selectedSeoSuites = suite.seo_suites.filter(
+      (seoSuite) => seoSuite.is_follow,
+    );
+    if (selectedSeoSuites.length > 0) {
+      selectedSuites.push({
+        ...suite,
+        seo_suites: selectedSeoSuites,
+      });
+    }
+  }
 
-  return await updatedSuites;
+  return selectedSuites;
 };

@@ -5,6 +5,8 @@ import suitesSliceReducer, {
   getSuitesSlice,
   suitesToggleFollow,
   suitesUpdate,
+  showAllSuites,
+  showSelectedSuites,
 } from './suites';
 
 export {
@@ -15,4 +17,6 @@ export {
   suitesToggleFollow,
   suitesSliceReducer,
   suitesUpdate,
+  showAllSuites,
+  showSelectedSuites,
 };
