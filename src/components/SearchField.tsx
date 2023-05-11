@@ -7,11 +7,16 @@ const _placeHolder = 'What do you want to find?';
 
 type SearchFieldType = {
   placeHolder?: string;
+  disabled: boolean;
 };
 
-const SearchField = ({ placeHolder = _placeHolder }: SearchFieldType) => {
+const SearchField = ({
+  placeHolder = _placeHolder,
+  disabled,
+}: SearchFieldType) => {
   return (
     <TextField
+      disabled={disabled}
       variant="outlined"
       placeholder={placeHolder}
       InputProps={{

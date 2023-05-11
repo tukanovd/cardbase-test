@@ -10,8 +10,8 @@ import {
   Paper,
 } from '@mui/material';
 import ListFilter from './ListFilter';
-import { Header, SearchField, CardRenderer } from '../components';
-import { AppState } from '../store/types';
+import { Header, SearchField, CardRenderer, Loader } from '../components';
+import { AppState, SliceStatus } from '../store/types';
 import { ReactComponent as CollectbaseLogo } from '../assets/CollectbaseLogo.svg';
 
 const stub = {
@@ -27,7 +27,8 @@ const stub = {
 
 const _suitesData = [stub, stub, stub, stub, stub];
 const Home = () => {
-  const suites = useSelector((state: AppState) => state.suites);
+  const suitesData = useSelector((state: AppState) => state.suites);
+  const { status, suites } = suitesData;
 
   console.log('suites ', suites);
   return (
@@ -38,47 +39,49 @@ const Home = () => {
           style={{ gap: '24px', paddingTop: '24px' }}
         >
           <CollectbaseLogo />
-          <SearchField />
+          <SearchField disabled={status !== SliceStatus.Finished} />
         </div>
       </Header>
       <Container maxWidth="sm" sx={{ paddingTop: '51px' }}>
-        <Box sx={{ height: '100vh' }}>
-          <ListFilter />
+        <Loader status={status}>
+          <Box sx={{ height: '100vh' }}>
+            <ListFilter />
 
-          <List>
-            <ListItem disablePadding>
-              <Typography
-                variant="h3"
-                color="text.disabled"
-                style={{ paddingTop: '10px', paddingBottom: '14px' }}
-              >
-                2011
-              </Typography>
-            </ListItem>
+            <List>
+              <ListItem disablePadding>
+                <Typography
+                  variant="h3"
+                  color="text.disabled"
+                  style={{ paddingTop: '10px', paddingBottom: '14px' }}
+                >
+                  2011
+                </Typography>
+              </ListItem>
 
-            <ListItem disablePadding>
-              <Paper variant="outlined" className="full-width">
-                {_suitesData.map((suite, index) => {
-                  const { id, name, is_follow, sport_name } = suite;
-                  const description = `${name} ${sport_name}`;
-                  const lastItem = index === _suitesData.length - 1;
+              <ListItem disablePadding>
+                <Paper variant="outlined" className="full-width">
+                  {_suitesData.map((suite, index) => {
+                    const { id, name, is_follow, sport_name } = suite;
+                    const description = `${name} ${sport_name}`;
+                    const lastItem = index === _suitesData.length - 1;
 
-                  return (
-                    <>
-                      <CardRenderer
-                        id={id}
-                        description={description}
-                        isSelected={is_follow}
-                      />
+                    return (
+                      <>
+                        <CardRenderer
+                          id={id}
+                          description={description}
+                          isSelected={is_follow}
+                        />
 
-                      {!lastItem && <Divider flexItem />}
-                    </>
-                  );
-                })}
-              </Paper>
-            </ListItem>
-          </List>
-        </Box>
+                        {!lastItem && <Divider flexItem />}
+                      </>
+                    );
+                  })}
+                </Paper>
+              </ListItem>
+            </List>
+          </Box>
+        </Loader>
       </Container>
     </>
   );

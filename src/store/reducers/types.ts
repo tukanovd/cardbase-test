@@ -8,7 +8,7 @@ export interface ActionType extends ActionErrorMessage {
 }
 
 export type SuitesPayloadResult = ActionErrorMessage & {
-  suites?: SuitesType | [];
+  suites?: SuitesType | {};
 };
 
 export type InitialStateType = SuitesPayloadResult & ActionType;

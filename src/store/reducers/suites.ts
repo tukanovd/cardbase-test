@@ -6,7 +6,7 @@ import { SliceStatus } from '../types';
 const initialState: InitialStateType = {
   status: SliceStatus.Idle,
   errorMessage: null,
-  suites: [],
+  suites: {},
 };
 
 const getSuitesSlice = createAction(GET_SUITES);

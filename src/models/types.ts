@@ -12,4 +12,7 @@ export type SuiteType = {
   year: number;
   seo_suites: SeoSuiteType[];
 };
-export type SuitesType = SuiteType[];
+export type SuitesType = {
+  meta: { total_cards_count: number };
+  suites: SuiteType[];
+};
