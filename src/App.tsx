@@ -1,11 +1,11 @@
 import React from 'react';
-import { InitApp } from './containers';
+import { InitApp, Home } from './containers';
 
 function App() {
   return (
     <div>
       <InitApp />
-      HELLO WORLD
+      <Home />
     </div>
   );
 }

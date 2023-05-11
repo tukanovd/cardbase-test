@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.content-between {
+  justify-content: space-between;
+}
+
+.content-center {
+  justify-content: center;
+}
+
+.items-center {
+  align-items: center;
+}
