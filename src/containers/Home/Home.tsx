@@ -42,7 +42,7 @@ const Home = () => {
         </div>
       </Header>
       <Container maxWidth="sm" sx={{ paddingTop: '51px' }}>
-        <Loader status={status}>
+        <Loader isReady={status === SliceStatus.Finished}>
           <Box sx={{ height: '100%' }}>
             <ListFilter />
             <VariableSizeList

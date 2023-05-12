@@ -1,21 +1,20 @@
 import React, { ReactElement } from 'react';
 import { CircularProgress } from '@mui/material';
-import { SliceStatus, SliceStatusType } from '../store/types';
 
 type LoaderType = {
   children: ReactElement;
-  status: SliceStatusType;
+  isReady: boolean;
 };
 
-const Loader = ({ status, children }: LoaderType) => {
-  if (status === SliceStatus.Loading) {
+const Loader = ({ isReady, children }: LoaderType) => {
+  if (!isReady) {
     return (
       <div className="flex flex-col items-center">
         <CircularProgress />
       </div>
     );
   }
-  if (status === SliceStatus.Finished) {
+  if (isReady) {
     return children;
   }
   return <>null</>;

@@ -9,9 +9,7 @@ export const getRowSize = (index: number) => rowSize[index];
 
 export const calcItemSize = (suites?: SuiteType[]) => {
   if (!suites) return;
-  Promise.resolve().then(() =>
-    suites.forEach((item, index) => {
-      setRowSize(index, item.seo_suites.length);
-    }),
-  );
+  suites.forEach((item, index) => {
+    setRowSize(index, item.seo_suites.length);
+  });
 };
