@@ -9,6 +9,7 @@ import {
   SuiteIdType,
   getAllSelected,
   updateSuites,
+  search,
 } from '../../models';
 import {
   suitesRequested,
@@ -17,6 +18,8 @@ import {
   suitesUpdateAction,
 } from '../reducers/suites';
 import { AppState } from '../types';
+import { ActionErrorMessage } from '../reducers/types';
+import { handleError } from '../../utils';
 
 export function* handleGetSuites() {
   yield put(suitesRequested());
@@ -66,4 +69,27 @@ export function* handleShowAll() {
   } catch (e: any) {
     yield put(suitesFailed({ errorMessage: e }));
   }
+}
+
+export function* handleSearchSuites(action: PayloadAction<string>) {
+  const searchKeyword = action.payload;
+  try {
+    const allSuites: SuitesType = yield call(getSuites);
+    const suites: SuiteType[] = yield call(
+      search,
+      searchKeyword,
+      allSuites.suites,
+    );
+    console.log('suites search ', suites);
+
+    yield put(suitesUpdateAction({ meta: allSuites.meta, suites }));
+  } catch (e: any) {
+    yield put(suitesFailed({ errorMessage: e }));
+  }
+}
+
+export function* handleErrors(action: PayloadAction<ActionErrorMessage>) {
+  const { errorMessage } = action.payload;
+
+  yield handleError(errorMessage || '');
 }

@@ -1,6 +1,7 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   GET_SUITES,
+  SEARCH_SUITES_BY_KEYWORD,
   SHOW_ALL_SUITES,
   SHOW_ONLY_SELECTED_SUITES,
   TOGGLE_FOLLOW,
@@ -19,6 +20,7 @@ const getSuitesSlice = createAction(GET_SUITES);
 const suitesToggleFollow = createAction<SuiteIdType>(TOGGLE_FOLLOW);
 const showSelectedSuites = createAction(SHOW_ONLY_SELECTED_SUITES);
 const showAllSuites = createAction(SHOW_ALL_SUITES);
+const searchSuites = createAction<string>(SEARCH_SUITES_BY_KEYWORD);
 
 const suitesSlice = createSlice({
   name: 'suites',
@@ -57,6 +59,7 @@ export {
   suitesToggleFollow,
   showSelectedSuites,
   showAllSuites,
+  searchSuites,
 };
 
 export default suitesSlice.reducer;

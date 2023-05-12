@@ -1,7 +1,7 @@
 import { fetchData, withCache, updateCache } from '../utils';
 import { SUITES_URL } from './constants';
 import { suitesStub } from './stub';
-import { SuiteType, SuitesType, SuiteIdType } from './types';
+import { SuiteType, SuitesType, SuiteIdType, SeoSuiteType } from './types';
 
 const cachedFetch = withCache<Promise<SuitesType>>(fetchData);
 
@@ -17,6 +17,7 @@ export const getSuites: () => Promise<SuitesType> = async () => {
   }
 
   // return stub data
+  console.log('using stub data');
   return Promise.resolve(suitesStub).then((suites) => {
     updateCache(SUITES_URL, suites);
     return suites;
@@ -69,4 +70,45 @@ export const getAllSelected: (
   }
 
   return selectedSuites;
+};
+
+export const search: (
+  searchWord: string,
+  suites: SuiteType[],
+) => Promise<SuiteType[]> = (searchWord, suites) => {
+  return new Promise((resolve) => {
+    const result: SuiteType[] = [];
+
+    const searchKeyword = searchWord.toLowerCase();
+
+    for (const suite of suites) {
+      const { seo_suites } = suite;
+      const matchingSeoSuites: SeoSuiteType[] = [];
+
+      for (const seoSuite of seo_suites) {
+        const { name, sport_name, year } = seoSuite;
+
+        const lowerCaseName = name.toLowerCase();
+        const lowerCaseSportName = sport_name.toLowerCase();
+        const lowerCaseYear = year.toString().toLowerCase();
+
+        if (
+          lowerCaseName.includes(searchKeyword) ||
+          lowerCaseSportName.includes(searchKeyword) ||
+          lowerCaseYear.includes(searchKeyword)
+        ) {
+          matchingSeoSuites.push(seoSuite);
+        }
+      }
+
+      if (matchingSeoSuites.length > 0) {
+        result.push({
+          ...suite,
+          seo_suites: matchingSeoSuites,
+        });
+      }
+    }
+
+    resolve(result);
+  });
 };

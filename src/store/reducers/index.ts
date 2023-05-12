@@ -7,6 +7,7 @@ import suitesSliceReducer, {
   suitesUpdateAction,
   showAllSuites,
   showSelectedSuites,
+  searchSuites,
 } from './suites';
 
 export {
@@ -19,4 +20,5 @@ export {
   suitesUpdateAction as suitesUpdate,
   showAllSuites,
   showSelectedSuites,
+  searchSuites,
 };

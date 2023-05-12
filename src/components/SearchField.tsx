@@ -8,17 +8,25 @@ const _placeHolder = 'What do you want to find?';
 type SearchFieldType = {
   placeHolder?: string;
   disabled: boolean;
+  onChange: (input: string) => void;
 };
 
 const SearchField = ({
   placeHolder = _placeHolder,
   disabled,
+  onChange,
 }: SearchFieldType) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
+    onChange(e.target.value);
+  };
   return (
     <TextField
       disabled={disabled}
       variant="outlined"
       placeholder={placeHolder}
+      onChange={handleChange}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
