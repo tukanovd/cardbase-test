@@ -1,5 +1,5 @@
-import React from 'react';
-import { ListChildComponentProps } from 'react-window';
+import React, { memo } from 'react';
+import { ListChildComponentProps, areEqual } from 'react-window';
 import { VirtualizedList, SuiteCard } from '../../components';
 import { SuiteType, SeoSuiteType } from '../../models';
 
@@ -22,8 +22,10 @@ const renderRow = ({
   );
 };
 
-const renderCard = (data: SeoSuiteType) => {
-  return <SuiteCard suiteData={data} />;
+const Row = memo(renderRow, areEqual);
+
+const renderCard = (data: SeoSuiteType, isLast: boolean) => {
+  return <SuiteCard suiteData={data} divider={!isLast} />;
 };
 
-export default renderRow;
+export default Row;

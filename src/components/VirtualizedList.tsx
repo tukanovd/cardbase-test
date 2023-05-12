@@ -9,7 +9,10 @@ import {
 
 type VirtualizedListType<T> = {
   header?: number | string;
-  childRenderer: (data: T) => JSX.Element | JSX.Element[] | ReactElement[];
+  childRenderer: (
+    data: T,
+    isLast: boolean,
+  ) => JSX.Element | JSX.Element[] | ReactElement[];
   data: any[];
 };
 
@@ -38,11 +41,14 @@ const VirtualizedList = <T,>({
       <ListItem>
         <List>
           <Paper variant="outlined" className="full-width">
-            {data.map((itemData, index) => (
-              <React.Fragment key={index}>
-                {childRenderer(itemData)}
-              </React.Fragment>
-            ))}
+            {data.map((itemData, index) => {
+              const isLastElement = index === data.length - 1;
+              return (
+                <React.Fragment key={index}>
+                  {childRenderer(itemData, isLastElement)}
+                </React.Fragment>
+              );
+            })}
           </Paper>
         </List>
       </ListItem>
