@@ -1,28 +1,30 @@
 interface CacheResolver<T> {
-  (key: string): T;
+  (key: string): Promise<T>;
 }
 
 interface CacheItem {
   value: any;
 }
 
-type Cache = Map<string | number, CacheItem>;
+type Cache = { [key: string]: CacheItem };
 
-const cache: Cache = new Map();
+const cacheKey = '__cache__';
+const cache: Cache = JSON.parse(localStorage.getItem(cacheKey) || '{}');
 
 export const withCache = <T>(
-  callback: (key: string) => T,
+  callback: (key: string) => Promise<T>,
 ): CacheResolver<T> => {
-  function runFuncAndSave(key: string): T {
-    const result = callback(key);
-    cache.set(key, { value: result });
+  async function runFuncAndSave(key: string): Promise<T> {
+    const result = await callback(key);
+    cache[key] = { value: result };
+    localStorage.setItem(cacheKey, JSON.stringify(cache));
     return result;
   }
 
-  function cacheResolver(key: string) {
-    const cachedValue = cache.get(key);
+  async function cacheResolver(key: string): Promise<T> {
+    const cachedValue = cache[key];
 
-    if (!!cachedValue) {
+    if (cachedValue) {
       return cachedValue.value;
     }
 
@@ -33,9 +35,8 @@ export const withCache = <T>(
 };
 
 export const updateCache = <T>(key: string, data: T): void => {
-  if (cache.has(key)) {
-    cache.set(key, { value: data });
-  }
+  cache[key] = { value: data };
+  localStorage.setItem(cacheKey, JSON.stringify(cache));
 };
 
 export default withCache;
